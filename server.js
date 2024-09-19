@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Produto } = require('./models');
+const { Estoque } = require('./models');
+
+//const estoquesRouter = require('./routes/estoques'); // Importar as rotas de estoques
 
 const app = express();
 const port = 3000;
@@ -30,6 +33,14 @@ app.delete('/produtos/:id', async (req, res) => {
   const { id } = req.params;
   await Produto.destroy({ where: { id } });
   res.json({ message: 'Produto excluído com sucesso' });
+});
+
+
+//app.use('/estoques', estoquesRouter);
+
+app.get('/estoques', async (req, res) => {
+  const estoques = await Estoque.findAll();
+  res.json(estoques);
 });
 
 app.listen(port, () => {

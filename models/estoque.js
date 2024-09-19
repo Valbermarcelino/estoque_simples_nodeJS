@@ -1,17 +1,37 @@
 'use strict';
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  const Estoque = sequelize.define('Estoque', {
+  class Estoque extends Model {
+    /**
+     * Define associações, se necessário.
+     */
+    static associate(models) {
+      // Definir associações aqui, se necessário
+    }
+  }
+
+  Estoque.init({
     referencia: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false, // O campo não pode ser nulo
+      validate: {
+        notEmpty: true // O campo não pode ser vazio
+      }
     },
     descricao: {
-      type: DataTypes.TEXT,
-      allowNull: true
+      type: DataTypes.STRING,
+      allowNull: false, // O campo não pode ser nulo
+      validate: {
+        notEmpty: true // O campo não pode ser vazio
+      }
     }
-  }, {});
-  Estoque.associate = function(models) {
-    // Associações podem ser definidas aqui
-  };
+  }, {
+    sequelize,
+    modelName: 'Estoque',
+    tableName: 'estoques', // Nome da tabela no banco de dados
+    timestamps: true // Adiciona campos createdAt e updatedAt automaticamente
+  });
+
   return Estoque;
 };
