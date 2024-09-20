@@ -9,3 +9,6 @@ npm install
 
 - Para testar as rotas com Insomnia use:
 Teste estoque - insomnia.json
+
+versão node: v20.17.0
+versão npm: 10.8.2
