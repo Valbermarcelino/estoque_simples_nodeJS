@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Produto',
-    tableName: 'Produtos', // Nome da tabela no banco de dados
+    tableName: 'produtos', // Nome da tabela no banco de dados
     timestamps: true // Adiciona campos createdAt e updatedAt automaticamente
   });
 
