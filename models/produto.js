@@ -3,53 +3,69 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Produto extends Model {
-    /**
-     * Método para definir associações.
-     * Este método não faz parte do ciclo de vida do Sequelize.
-     * O arquivo `models/index` chamará este método automaticamente.
-     */
     static associate(models) {
-      // Definir associações, se necessário
+      // Definir associações aqui, se necessário
     }
   }
 
   Produto.init({
     nome: {
       type: DataTypes.STRING,
-      allowNull: false, // Campo obrigatório
+      allowNull: false,
       validate: {
         notEmpty: true // O campo não pode ser vazio
       }
     },
     quantidade: {
       type: DataTypes.INTEGER,
-      allowNull: false, // Campo obrigatório
+      allowNull: false,
       validate: {
-        isInt: true, // Valida se é um número inteiro
+        isInt: true,
         min: 0 // Não pode ser negativo
       }
     },
     preco: {
       type: DataTypes.DECIMAL,
-      allowNull: false, // Campo obrigatório
+      allowNull: false,
       validate: {
-        isDecimal: true, // Valida se é um número decimal
+        isDecimal: true,
         min: 0.0 // Não pode ser negativo
       }
     },
-    ref: { // Novo campo ref
+    ref: { // Campo ref do produto
       type: DataTypes.STRING,
-      allowNull: true // Se necessário, troque para false se o campo não puder ser nulo
+      allowNull: true
     },
-    responsavel: { // Novo campo responsavel
+    responsavel: {
       type: DataTypes.STRING,
-      allowNull: true // Se necessário, troque para false se o campo não puder ser nulo
+      allowNull: true
     }
   }, {
     sequelize,
     modelName: 'Produto',
-    tableName: 'produtos', // Nome da tabela no banco de dados
-    timestamps: true // Adiciona campos createdAt e updatedAt automaticamente
+    tableName: 'produtos',
+    timestamps: true,
+    hooks: {
+      // Hook beforeCreate para adicionar uma referência, se necessário
+      async beforeCreate(produto, options) {
+        const { Referencia } = sequelize.models; // Certifique-se de que o modelo `Referencia` foi carregado
+
+        if (produto.ref) {
+          // Verifica se a referência já existe
+          const referenciaExistente = await Referencia.findOne({
+            where: { referencia: produto.ref }
+          });
+
+          // Se a referência não existir, cria uma nova
+          if (!referenciaExistente) {
+            await Referencia.create({
+              referencia: produto.ref,
+              descricao: produto.nome // Usa o nome do produto como descrição
+            });
+          }
+        }
+      }
+    }
   });
 
   return Produto;

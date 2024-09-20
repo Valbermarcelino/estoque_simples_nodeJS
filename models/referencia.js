@@ -3,34 +3,31 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Referencia extends Model {
-    /**
-     * Define associações, se necessário.
-     */
     static associate(models) {
-      // Definir associações aqui, se necessário
+      // Definir associações, se necessário
     }
   }
 
   Referencia.init({
     referencia: {
       type: DataTypes.STRING,
-      allowNull: false, // O campo não pode ser nulo
+      allowNull: false,
       validate: {
-        notEmpty: true // O campo não pode ser vazio
+        notEmpty: true
       }
     },
     descricao: {
       type: DataTypes.STRING,
-      allowNull: false, // O campo não pode ser nulo
+      allowNull: false,
       validate: {
-        notEmpty: true // O campo não pode ser vazio
+        notEmpty: true
       }
     }
   }, {
     sequelize,
-    modelName: 'Referencia', // Nome do modelo
-    tableName: 'referencias', // Nome da tabela no banco de dados
-    timestamps: true // Adiciona campos createdAt e updatedAt automaticamente
+    modelName: 'Referencia',
+    tableName: 'referencias',
+    timestamps: true
   });
 
   return Referencia;
