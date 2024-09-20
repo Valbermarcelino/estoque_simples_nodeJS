@@ -17,15 +17,15 @@ app.get('/produtos', async (req, res) => {
 });
 
 app.post('/produtos', async (req, res) => {
-  const { nome, quantidade, preco } = req.body;
-  const novoProduto = await Produto.create({ nome, quantidade, preco });
+  const { nome, quantidade, preco, ref, responsavel } = req.body;
+  const novoProduto = await Produto.create({ nome, quantidade, preco, ref, responsavel});
   res.json(novoProduto);
 });
 
 app.put('/produtos/:id', async (req, res) => {
   const { id } = req.params;
-  const { nome, quantidade, preco } = req.body;
-  await Produto.update({ nome, quantidade, preco }, { where: { id } });
+  const { nome, quantidade, preco, ref, responsavel } = req.body;
+  await Produto.update({ nome, quantidade, preco, ref, responsavel }, { where: { id } });
   res.json({ message: 'Produto atualizado com sucesso' });
 });
 
