@@ -49,7 +49,28 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Produto',
     tableName: 'produtos',
-    timestamps: true
+    timestamps: true,
+    hooks: {
+      // Hook beforeCreate para adicionar uma referência, se necessário
+      async beforeCreate(produto, options) {
+        const { Referencia } = sequelize.models; // Certifique-se de que o modelo `Referencia` foi carregado
+
+        if (produto.ref) {
+          // Verifica se a referência já existe
+          const referenciaExistente = await Referencia.findOne({
+            where: { referencia: produto.ref }
+          });
+
+          // Se a referência não existir, cria uma nova
+          if (!referenciaExistente) {
+            await Referencia.create({
+              referencia: produto.ref,
+              descricao: produto.nome // Usa o nome do produto como descrição
+            });
+          }
+        }
+      }
+    }
   });
 
   return Produto;
