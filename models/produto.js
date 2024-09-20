@@ -4,7 +4,12 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Produto extends Model {
     static associate(models) {
-      // Definir associações aqui, se necessário
+      // Associação com Referencia
+      Produto.belongsTo(models.Referencia, {
+        foreignKey: 'ref', // Campo em 'produtos' que é a chave estrangeira
+        targetKey: 'referencia', // Campo em 'referencias' que será referenciado
+        as: 'referenciaProduto' // Alias da associação (opcional)
+      });
     }
   }
 
@@ -32,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         min: 0.0 // Não pode ser negativo
       }
     },
-    ref: { // Campo ref do produto
+    ref: { // Campo que será a chave estrangeira
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -44,28 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Produto',
     tableName: 'produtos',
-    timestamps: true,
-    hooks: {
-      // Hook beforeCreate para adicionar uma referência, se necessário
-      async beforeCreate(produto, options) {
-        const { Referencia } = sequelize.models; // Certifique-se de que o modelo `Referencia` foi carregado
-
-        if (produto.ref) {
-          // Verifica se a referência já existe
-          const referenciaExistente = await Referencia.findOne({
-            where: { referencia: produto.ref }
-          });
-
-          // Se a referência não existir, cria uma nova
-          if (!referenciaExistente) {
-            await Referencia.create({
-              referencia: produto.ref,
-              descricao: produto.nome // Usa o nome do produto como descrição
-            });
-          }
-        }
-      }
-    }
+    timestamps: true
   });
 
   return Produto;
