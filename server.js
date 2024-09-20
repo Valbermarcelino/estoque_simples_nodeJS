@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Produto } = require('./models');
-const { Estoque } = require('./models');
 
-const estoquesRouter = require('./routes/estoques'); // Importar as rotas de estoques
+const referenciasRouter = require('./routes/referencia'); // Importar as rotas de estoques
 
 const app = express();
 const port = 3000;
@@ -36,7 +35,7 @@ app.delete('/produtos/:id', async (req, res) => {
 });
 
 
-app.use('/estoques', estoquesRouter);
+app.use('/referencias', referenciasRouter);
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);

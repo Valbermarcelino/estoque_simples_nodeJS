@@ -2,7 +2,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Estoque extends Model {
+  class Referencia extends Model {
     /**
      * Define associações, se necessário.
      */
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  Estoque.init({
+  Referencia.init({
     referencia: {
       type: DataTypes.STRING,
       allowNull: false, // O campo não pode ser nulo
@@ -28,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Estoque',
-    tableName: 'estoques', // Nome da tabela no banco de dados
+    modelName: 'Referencia', // Nome do modelo
+    tableName: 'referencias', // Nome da tabela no banco de dados
     timestamps: true // Adiciona campos createdAt e updatedAt automaticamente
   });
 
-  return Estoque;
+  return Referencia;
 };
