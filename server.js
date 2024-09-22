@@ -1,11 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const cors = require('cors'); // Importar o middleware cors
+
 const { Produto } = require('./models');
 
 const referenciasRouter = require('./routes/referencia'); // Importar as rotas de estoques
 
 const app = express();
 const port = 3000;
+
+// Configurar o middleware cors
+app.use(cors());
 
 app.use(bodyParser.json());
 
